@@ -12,6 +12,8 @@ from typing import Optional
 import werkzeug
 import yaml
 
+from pagepile import load_pagepile, create_pagepile
+
 
 app = flask.Flask(__name__)
 
@@ -112,9 +114,40 @@ def authenticated_session() -> Optional[mwapi.Session]:
                          user_agent=user_agent)
 
 
+def anonymous_session(domain: str = 'meta.wikimedia.org') -> mwapi.Session:
+    return mwapi.Session(host='https://'+domain, user_agent=user_agent)
+
+
 @app.route('/')
 def index() -> str:
     return flask.render_template('index.html')
+
+
+@app.route('/pagepile/<int:id>/')
+def pagepile(id: int):
+    pile = load_pagepile(anonymous_session('meta.wikimedia.org'), id)
+    if not pile:
+        return 'no such pile', 404 # TODO nicer error
+    domain, pages = pile
+    if domain != 'commons.wikimedia.org':
+        return 'refusing to work with domain %s' % domain, 400
+    return flask.render_template('pagepile.html',
+                                 id=id,
+                                 domain=domain,
+                                 pages=pages)
+
+
+@app.route('/pagepile/<int:id>/filter', methods=['POST'])
+def filter_pagepile(id: int):
+    if not submitted_request_valid():
+        return 'CSRF error', 400 # TODO nicer error
+    session = anonymous_session('meta.wikimedia.org')
+    domain, original_pages = load_pagepile(session, id)
+    new_pages = flask.request.form.getlist('file')
+    if not new_pages or len(new_pages) >= len(original_pages):
+        return 'no changes', 200 # TODO better response
+    new_id = create_pagepile(session, domain, new_pages)
+    return flask.redirect('https://tools.wmflabs.org/pagepile/api.php?action=get_data&id=%d&format=html' % new_id)
 
 
 @app.route('/greet/<name>')

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block main %}
+<form method="post" action="{{ url_for('filter_pagepile', id=id) }}">
+  <input name="csrf_token" type="hidden" value="{{ csrf_token() }}">
+  <div>
+    {% for page in pages %}
+    <label>
+      <img src="https://{{ domain }}/wiki/Special:FilePath/{{ page }}?width=250px&height=250px"><br>
+      <input type="checkbox" name="file" value="{{ page }}">
+    </label>
+    {% endfor %}
+  </div>
+  <button class="btn btn-primary">Filter PagePile</button>
+</form>
+{% endblock %}
