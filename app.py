@@ -158,48 +158,6 @@ def filter_pagepile(id: int):
     return flask.redirect('https://tools.wmflabs.org/pagepile/api.php?action=get_data&id=%d&format=html' % new_id)
 
 
-@app.route('/greet/<name>')
-def greet(name: str) -> str:
-    return flask.render_template('greet.html',
-                                 name=name)
-
-
-@app.route('/praise', methods=['GET', 'POST'])
-def praise() -> str:
-    csrf_error = False
-    if flask.request.method == 'POST':
-        if submitted_request_valid():
-            praise = flask.request.form.get('praise', 'praise missing')
-            flask.session['praise'] = praise
-        else:
-            csrf_error = True
-            flask.g.repeat_form = True
-
-    session = authenticated_session()
-    if session:
-        userinfo = session.get(action='query',
-                               meta='userinfo',
-                               uiprop='options')['query']['userinfo']
-        name = userinfo['name']
-        gender = userinfo['options']['gender']
-        if gender == 'male':
-            default_praise = 'Praise him with great praise!'
-        elif gender == 'female':
-            default_praise = 'Praise her with great praise!'
-        else:
-            default_praise = 'Praise them with great praise!'
-    else:
-        name = None
-        default_praise = 'You rock!'
-
-    praise = flask.session.get('praise', default_praise)
-
-    return flask.render_template('praise.html',
-                                 name=name,
-                                 praise=praise,
-                                 csrf_error=csrf_error)
-
-
 @app.route('/login')
 def login() -> werkzeug.Response:
     redirect, request_token = mwoauth.initiate(index_php,
