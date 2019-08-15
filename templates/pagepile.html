@@ -1,4 +1,12 @@
 {% extends "base.html" %}
+{% block head %}
+{{ super() }}
+<style>
+  input[type=checkbox]:checked ~ img {
+      outline: gold 2px solid;
+  }
+</style>
+{% endblock %}
 {% block main %}
 <h1>Filter <a href="https://tools.wmflabs.org/pagepile/api.php?action=get_data&id={{ id }}&format=html">PagePile #{{ id }}</a></h1>
 <p>
@@ -9,8 +17,9 @@
   <div>
     {% for page in pages %}
     <label>
-      <img src="https://{{ domain }}/wiki/Special:FilePath/{{ page }}?width=250px&height=250px"><br>
       <input type="checkbox" name="file" value="{{ page }}">
+      <br>
+      <img src="https://{{ domain }}/wiki/Special:FilePath/{{ page }}?width=250px&height=250px">
     </label>
     {% endfor %}
   </div>
