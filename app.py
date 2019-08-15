@@ -123,6 +123,14 @@ def index() -> str:
     return flask.render_template('index.html')
 
 
+@app.route('/pagepile/')
+def pagepile_redirect():
+    id = flask.request.args.get('page_pile_id')
+    if not id:
+        return flask.redirect(flask.url_for('index'))
+    return flask.redirect(flask.url_for('pagepile', id=id))
+
+
 @app.route('/pagepile/<int:id>/')
 def pagepile(id: int):
     pile = load_pagepile(anonymous_session('meta.wikimedia.org'), id)
