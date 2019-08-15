@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% block main %}
+<h1>Filter <a href="https://tools.wmflabs.org/pagepile/api.php?action=get_data&id={{ id }}&format=html">PagePile #{{ id }}</a></h1>
+<p>
+  Select all the files that you want to <strong>keep</strong> in the new PagePile.
+</p>
 <form method="post" action="{{ url_for('filter_pagepile', id=id) }}">
   <input name="csrf_token" type="hidden" value="{{ csrf_token() }}">
   <div>
