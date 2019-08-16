@@ -1,5 +1,8 @@
 import requests
-import requests_oauthlib # type: ignore
+import requests_oauthlib  # type: ignore
+
+
+user_agent = user_agent = 'QuickCategories test (mail@lucaswerkmeister.de)'
 
 
 class FakeSession:
@@ -9,8 +12,11 @@ class FakeSession:
         self.post_response = post_response
         self.host = None
         self.session = requests.Session()
-        self.session.auth = requests_oauthlib.OAuth1(client_key='fake client key', client_secret='fake client secret',
-                                                     resource_owner_key='fake resource owner key', resource_owner_secret='fake resource owner secret')
+        self.session.auth = requests_oauthlib.OAuth1(
+            client_key='fake client key',
+            client_secret='fake client secret',
+            resource_owner_key='fake resource owner key',
+            resource_owner_secret='fake resource owner secret')
 
     def get(self, *args, **kwargs):
         return self.get_response
