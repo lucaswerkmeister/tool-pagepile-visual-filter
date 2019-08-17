@@ -93,7 +93,10 @@ def filter_pagepile(id: int):
     if not submitted_request_valid():
         return 'CSRF error', 400  # TODO nicer error
     session = anonymous_session('meta.wikimedia.org')
-    domain, original_pages = load_pagepile(session, id)
+    original_pile = load_pagepile(session, id)
+    if not original_pile:
+        return 'no such pile', 404  # TODO nicer error
+    domain, original_pages = original_pile
     new_pages = flask.request.form.getlist('file')
     if not new_pages or len(new_pages) >= len(original_pages):
         return 'no changes', 200  # TODO better response
