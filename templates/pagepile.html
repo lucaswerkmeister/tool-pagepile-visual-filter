@@ -6,6 +6,10 @@
       outline: rgba(255, 0, 0, 0.5) 100px solid;
       outline-offset: -100px;
   }
+
+  input[type=checkbox] {
+      display: none;
+  }
 </style>
 <script src="{{ url_for('static', filename='selection-buttons.js') }}"></script>
 {% endblock %}
@@ -29,7 +33,6 @@
     {% for page in pages %}
     <label>
       <input type="checkbox" name="file" value="{{ page }}">
-      <br>
       <img src="https://{{ domain }}/wiki/Special:FilePath/{{ page }}?width=250px&height=250px">
     </label>
     {% endfor %}
