@@ -3,7 +3,8 @@
 {{ super() }}
 <style>
   input[type=checkbox]:checked ~ img {
-      outline: gold 2px solid;
+      outline: rgba(255, 0, 0, 0.5) 100px solid;
+      outline-offset: -100px;
   }
 </style>
 <script src="{{ url_for('static', filename='selection-buttons.js') }}"></script>
