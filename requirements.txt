@@ -2,10 +2,8 @@ cachetools
 flake8
 flask
 mwapi
-mwoauth
 pytest
 mypy
 pyyaml
 requests
-requests_oauthlib
 toolforge

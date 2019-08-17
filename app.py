@@ -2,14 +2,10 @@
 
 import flask
 import mwapi  # type: ignore
-import mwoauth  # type: ignore
 import os
 import random
-import requests_oauthlib  # type: ignore
 import string
 import toolforge
-from typing import Optional
-import werkzeug
 import yaml
 
 from pagepile import load_pagepile, create_pagepile
@@ -30,12 +26,6 @@ except FileNotFoundError:
     characters = string.ascii_letters + string.digits
     random_string = ''.join(random.choice(characters) for _ in range(64))
     app.secret_key = random_string
-
-if 'oauth' in app.config:
-    oauth_config = app.config['oauth']
-    consumer_token = mwoauth.ConsumerToken(oauth_config['consumer_key'],
-                                           oauth_config['consumer_secret'])
-    index_php = 'https://commons.wikimedia.org/w/index.php'
 
 
 @app.template_global()
@@ -65,53 +55,6 @@ def form_attributes(name: str) -> flask.Markup:
             flask.Markup.escape(name) +
             flask.Markup(r'" ') +
             form_value(name))
-
-
-@app.template_filter()
-def user_link(user_name: str) -> flask.Markup:
-    user_href = 'https://commons.wikimedia.org/wiki/User:'
-    return (flask.Markup(r'<a href="' + user_href) +
-            flask.Markup.escape(user_name.replace(' ', '_')) +
-            flask.Markup(r'">') +
-            flask.Markup(r'<bdi>') +
-            flask.Markup.escape(user_name) +
-            flask.Markup(r'</bdi>') +
-            flask.Markup(r'</a>'))
-
-
-@app.template_global()
-def authentication_area() -> flask.Markup:
-    if 'oauth' not in app.config:
-        return flask.Markup()
-
-    if 'oauth_access_token' not in flask.session:
-        return (flask.Markup(r'<a id="login" class="navbar-text" href="') +
-                flask.Markup.escape(flask.url_for('login')) +
-                flask.Markup(r'">Log in</a>'))
-
-    access_token = mwoauth.AccessToken(**flask.session['oauth_access_token'])
-    identity = mwoauth.identify(index_php,
-                                consumer_token,
-                                access_token)
-
-    return (flask.Markup(r'<span class="navbar-text">Logged in as ') +
-            user_link(identity['username']) +
-            flask.Markup(r'</span>'))
-
-
-def authenticated_session() -> Optional[mwapi.Session]:
-    if 'oauth_access_token' not in flask.session:
-        return None
-
-    access_token = mwoauth.AccessToken(
-        **flask.session['oauth_access_token'])
-    auth = requests_oauthlib.OAuth1(client_key=consumer_token.key,
-                                    client_secret=consumer_token.secret,
-                                    resource_owner_key=access_token.key,
-                                    resource_owner_secret=access_token.secret)
-    return mwapi.Session(host='https://commons.wikimedia.org',
-                         auth=auth,
-                         user_agent=user_agent)
 
 
 def anonymous_session(domain: str = 'meta.wikimedia.org') -> mwapi.Session:
@@ -158,30 +101,6 @@ def filter_pagepile(id: int):
     url = 'https://tools.wmflabs.org/pagepile/api.php' \
         '?action=get_data&id=%d&format=html' % new_id
     return flask.redirect(url)
-
-
-@app.route('/login')
-def login() -> werkzeug.Response:
-    redirect, request_token = mwoauth.initiate(index_php,
-                                               consumer_token,
-                                               user_agent=user_agent)
-    flask.session['oauth_request_token'] = dict(zip(request_token._fields,
-                                                    request_token))
-    return flask.redirect(redirect)
-
-
-@app.route('/oauth/callback')
-def oauth_callback() -> werkzeug.Response:
-    request_token = mwoauth.RequestToken(
-        **flask.session.pop('oauth_request_token'))
-    access_token = mwoauth.complete(index_php,
-                                    consumer_token,
-                                    request_token,
-                                    flask.request.query_string,
-                                    user_agent=user_agent)
-    flask.session['oauth_access_token'] = dict(zip(access_token._fields,
-                                                   access_token))
-    return flask.redirect(flask.url_for('index'))
 
 
 def full_url(endpoint: str, **kwargs) -> str:
