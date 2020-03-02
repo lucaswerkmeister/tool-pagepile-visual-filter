@@ -10,7 +10,7 @@
 <form method="get" action="{{ url_for('pagepile_redirect') }}">
   <div class="form-group">
     <label for="page_pile_id">PagePile ID</label>
-    <input id="page_pile_id" class="form-control" name="page_pile_id" type="number" placeholder="12345" autofocus>
+    <input id="page_pile_id" class="form-control" name="page_pile_id" inputmode="numeric" pattern="[1-9][0-9]*" required placeholder="12345" autofocus>
   </div>
   <button class="btn btn-primary">Filter this PagePile</button>
 {% endblock %}
