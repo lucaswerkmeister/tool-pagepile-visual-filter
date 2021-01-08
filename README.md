@@ -1,6 +1,6 @@
 # PagePile Visual Filter
 
-[This tool](https://tools.wmflabs.org/pagepile-visual-filter/) lets users filter a PagePile of images visually.
+[This tool](https://pagepile-visual-filter.toolforge.org/) lets users filter a PagePile of images visually.
 
 For more information,
 please see the tool’s [on-wiki documentation page](https://commons.wikimedia.org/wiki/User:Lucas_Werkmeister/PagePile_Visual_Filter).

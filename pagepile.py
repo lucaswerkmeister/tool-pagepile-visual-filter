@@ -11,7 +11,7 @@ def load_pagepile(session: mwapi.Session,
         params = {'id': id,
                   'action': 'get_data',
                   'format': 'json'}  # type: Dict[str, Union[int, str]]
-        r = requests.get('https://tools.wmflabs.org/pagepile/api.php',
+        r = requests.get('https://pagepile.toolforge.org/api.php',
                          params=params)
         pile = r.json()
     except ValueError:
@@ -33,7 +33,7 @@ def _page_for_pagepile(page: str) -> str:
 def create_pagepile(session: mwapi.Session,
                     domain: str,
                     pages: Iterator[str]) -> int:
-    r = requests.post('https://tools.wmflabs.org/pagepile/api.php', data={
+    r = requests.post('https://pagepile.toolforge.org/api.php', data={
         'action': 'create_pile_with_data',
         'wiki': sitematrix.domain_to_dbname(session, domain),
         'data': '\n'.join(map(_page_for_pagepile, pages)),

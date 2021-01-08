@@ -101,7 +101,7 @@ def filter_pagepile(id: int):
     if not new_pages or len(new_pages) >= len(original_pages):
         return 'no changes', 200  # TODO better response
     new_id = create_pagepile(session, domain, new_pages)
-    url = 'https://tools.wmflabs.org/pagepile/api.php' \
+    url = 'https://pagepile.toolforge.org/api.php' \
         '?action=get_data&id=%d&format=html' % new_id
     return flask.redirect(url)
 
@@ -129,15 +129,6 @@ def submitted_request_valid() -> bool:
     if submitted_token != real_token:
         # incorrect token (could be outdated or incorrectly forged)
         return False
-    if not (flask.request.referrer or '').startswith(full_url('index')):
-        # correct token but not coming from the correct page; for
-        # example, JS running on https://tools.wmflabs.org/tool-a is
-        # allowed to access https://tools.wmflabs.org/tool-b and
-        # extract CSRF tokens from it (since both of these pages are
-        # hosted on the https://tools.wmflabs.org domain), so checking
-        # the Referer header is our only protection against attackers
-        # from other Toolforge tools
-        return False
     return True
 
 
@@ -145,10 +136,8 @@ def submitted_request_valid() -> bool:
 def deny_frame(response: flask.Response) -> flask.Response:
     """Disallow embedding the tool’s pages in other websites.
 
-    If other websites can embed this tool’s pages, e. g. in <iframe>s,
-    other tools hosted on tools.wmflabs.org can send arbitrary web
-    requests from this tool’s context, bypassing the referrer-based
-    CSRF protection.
+    This mainly protects against clickjacking attacks,
+    since it’s very useful to embed this tool anyways.
     """
     response.headers['X-Frame-Options'] = 'deny'
     return response
