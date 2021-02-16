@@ -1,16 +1,7 @@
 {% extends "base.html" %}
 {% block head %}
 {{ super() }}
-<style>
-  input[type=checkbox]:checked ~ img {
-      outline: rgba(255, 0, 0, 0.5) 100px solid;
-      outline-offset: -100px;
-  }
-
-  input[type=checkbox] {
-      display: none;
-  }
-</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='pagepile.css') }}">
 <script defer src="{{ url_for('static', filename='selection-buttons.js') }}"></script>
 {% endblock %}
 {% block main %}

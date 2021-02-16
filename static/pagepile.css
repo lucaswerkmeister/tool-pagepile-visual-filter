@@ -1,0 +1,8 @@
+input[type=checkbox]:checked ~ img {
+    outline: rgba(255, 0, 0, 0.5) 100px solid;
+    outline-offset: -100px;
+}
+
+input[type=checkbox] {
+    display: none;
+}
