@@ -23,8 +23,10 @@
   <div>
     {% for page in pages %}
     <label>
-      <input type="checkbox" name="file" value="{{ page }}">
-      <img src="https://{{ domain }}/wiki/Special:FilePath/{{ page }}?width=250px&height=250px">
+      <input type="checkbox" name="file" value="{{ page }}" class="sr-only">
+      <span>
+        <img src="https://{{ domain }}/wiki/Special:FilePath/{{ page }}?width=250px&height=250px">
+      </span>
     </label>
     {% endfor %}
   </div>

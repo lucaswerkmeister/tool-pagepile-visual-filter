@@ -1,8 +1,8 @@
-input[type=checkbox]:checked ~ img {
-    outline: rgba(255, 0, 0, 0.5) 100px solid;
-    outline-offset: -100px;
+input[type=checkbox]:focus-visible ~ span {
+    outline: #36c 4px solid; /* Accent50 */
 }
 
-input[type=checkbox] {
-    display: none;
+input[type=checkbox]:checked ~ span > img {
+    outline: rgba(255, 0, 0, 0.5) 100px solid;
+    outline-offset: -100px;
 }
