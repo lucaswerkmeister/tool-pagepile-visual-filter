@@ -57,6 +57,12 @@ def form_attributes(name: str) -> flask.Markup:
             form_value(name))
 
 
+@app.template_filter()
+def pagepile_url(id: int) -> str:
+    return 'https://pagepile.toolforge.org/api.php' \
+        '?action=get_data&id=%d&format=html' % id
+
+
 def anonymous_session(domain: str = 'meta.wikimedia.org') -> mwapi.Session:
     return mwapi.Session(host='https://'+domain, user_agent=user_agent)
 
@@ -78,10 +84,13 @@ def pagepile_redirect():
 def pagepile(id: int):
     pile = load_pagepile(anonymous_session('meta.wikimedia.org'), id)
     if not pile:
-        return 'no such pile', 404  # TODO nicer error
+        return flask.render_template('no-such-pagepile.html',
+                                     id=id), 404
     domain, pages = pile
     if domain != 'commons.wikimedia.org':
-        return 'refusing to work with domain %s' % domain, 400
+        return flask.render_template('not-commons-pagepile.html',
+                                     id=id,
+                                     domain=domain), 400
     return flask.render_template('pagepile.html',
                                  id=id,
                                  domain=domain,
@@ -95,15 +104,14 @@ def filter_pagepile(id: int):
     session = anonymous_session('meta.wikimedia.org')
     original_pile = load_pagepile(session, id)
     if not original_pile:
-        return 'no such pile', 404  # TODO nicer error
+        return flask.render_template('no-such-pagepile.html',
+                                     id=id), 404
     domain, original_pages = original_pile
     new_pages = flask.request.form.getlist('file')
     if not new_pages or len(new_pages) >= len(original_pages):
         return 'no changes', 200  # TODO better response
     new_id = create_pagepile(session, domain, new_pages)
-    url = 'https://pagepile.toolforge.org/api.php' \
-        '?action=get_data&id=%d&format=html' % new_id
-    return flask.redirect(url)
+    return flask.redirect(pagepile_url(new_id))
 
 
 def full_url(endpoint: str, **kwargs) -> str:

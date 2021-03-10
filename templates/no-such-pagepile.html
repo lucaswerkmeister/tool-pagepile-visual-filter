@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="alert alert-info" role="alert">
+  <h1 class="alert-heading">No such PagePile</h1>
+  <p>
+    PagePile <a href="{{ id | pagepile_url }}">{{ id }}</a> does not appear to exist.
+  </p>
+</div>
+{% endblock %}

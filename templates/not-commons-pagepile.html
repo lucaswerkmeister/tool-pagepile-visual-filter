@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="alert alert-info" role="alert">
+  <h1 class="alert-heading">Not a Wikimedia Commons PagePile</h1>
+  <p>
+    PagePile <a href="{{ id | pagepile_url }}">{{ id }}</a> is a PagePile for {{ domain }},
+    but this tool only supports PagePiles for <a href="https://commons.wikimedia.org/">Wikimedia Commons</a>.
+  </p>
+</div>
+{% endblock %}
