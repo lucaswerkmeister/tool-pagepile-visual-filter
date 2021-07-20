@@ -1,4 +1,5 @@
 cachetools
+decorator
 flake8
 flask
 mwapi
@@ -7,5 +8,6 @@ mypy
 PyYAML
 requests
 toolforge
+types-decorator
 types-PyYAML
 types-requests
