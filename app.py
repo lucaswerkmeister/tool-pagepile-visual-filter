@@ -37,7 +37,7 @@ def csrf_token() -> str:
     return flask.session['csrf_token']
 
 
-@app.template_global()
+@app.template_global()  # type: ignore
 def form_value(name: str) -> flask.Markup:
     if 'repeat_form' in flask.g and name in flask.request.form:
         return (flask.Markup(r' value="') +
@@ -47,14 +47,14 @@ def form_value(name: str) -> flask.Markup:
         return flask.Markup()
 
 
-@app.template_global()
+@app.template_global()  # type: ignore
 def form_attributes(name: str) -> flask.Markup:
     return (flask.Markup(r' id="') +
             flask.Markup.escape(name) +
             flask.Markup(r'" name="') +
             flask.Markup.escape(name) +
             flask.Markup(r'" ') +
-            form_value(name))
+            form_value(name))  # type: ignore
 
 
 @app.template_filter()

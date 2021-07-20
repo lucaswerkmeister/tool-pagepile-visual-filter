@@ -4,6 +4,8 @@ flask
 mwapi
 pytest
 mypy
-pyyaml
+PyYAML
 requests
 toolforge
+types-PyYAML
+types-requests
