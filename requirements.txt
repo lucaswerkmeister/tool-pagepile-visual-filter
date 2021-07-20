@@ -1,7 +1,7 @@
 cachetools
 decorator
 flake8
-flask
+flask >= 2.0.0
 mwapi
 pytest
 mypy
