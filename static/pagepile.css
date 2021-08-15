@@ -3,6 +3,6 @@ input[type=checkbox]:focus-visible ~ span {
 }
 
 input[type=checkbox]:checked ~ span > img {
-    outline: rgba(255, 0, 0, 0.5) 100px solid;
-    outline-offset: -100px;
+    outline: rgba(255, 0, 0, 0.5) 125px solid;
+    outline-offset: -125px;
 }
