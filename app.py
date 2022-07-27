@@ -8,7 +8,7 @@ import random
 import stat
 import string
 import toolforge
-from typing import Any, Callable
+from typing import Any, Callable, Mapping, Optional, Sequence
 import yaml
 
 from pagepile import load_pagepile, create_pagepile
@@ -112,10 +112,11 @@ def pagepile(id: int):
         return flask.render_template('not-commons-pagepile.html',
                                      id=id,
                                      domain=domain), 400
+    files = load_files(anonymous_session(domain), pages)
     return flask.render_template('pagepile.html',
                                  id=id,
                                  domain=domain,
-                                 pages=pages)
+                                 files=files)
 
 
 @app.route('/pagepile/<int:id>/filter', methods=['POST'])
@@ -133,6 +134,26 @@ def filter_pagepile(id: int):
         return 'no changes', 200  # TODO better response
     new_id = create_pagepile(session, domain, new_pages)
     return flask.redirect(pagepile_url(new_id))
+
+
+def load_files(session: mwapi.Session,
+               titles: Sequence[str]) -> Mapping[str, Optional[Mapping]]:
+    files = dict.fromkeys(titles)
+    for chunk in [titles[i:i+50] for i in range(0, len(titles), 50)]:
+        for response in session.get(continuation=True,
+                                    action='query',
+                                    titles=chunk,
+                                    prop=['imageinfo'],
+                                    iiprop=['url'],
+                                    iiurlwidth=250,
+                                    iiurlheight=250,
+                                    formatversion=2):
+            for page in response.get('query', {}).get('pages', []):
+                try:
+                    files[page['title']] = page['imageinfo'][0]
+                except LookupError:
+                    pass
+    return files
 
 
 def full_url(endpoint: str, **kwargs) -> str:

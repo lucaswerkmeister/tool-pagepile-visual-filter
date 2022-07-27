@@ -21,11 +21,23 @@
 <form method="post" action="{{ url_for('filter_pagepile', id=id) }}">
   <input name="csrf_token" type="hidden" value="{{ csrf_token() }}">
   <div>
-    {% for page in pages %}
+    {% for file, imageinfo in files.items() if imageinfo %}
     <label>
       <input type="checkbox" name="file" value="{{ page }}" class="sr-only">
       <span>
-        <img src="https://{{ domain }}/wiki/Special:FilePath/{{ page }}?width=250px&height=250px">
+        <img
+          src="{{ imageinfo.thumburl }}"
+          width="{{ imageinfo.thumbwidth }}"
+          height="{{ imageinfo.thumbheight }}"
+          {% if imageinfo.responsiveUrls %}
+          srcset="
+            {% for factor, responsiveUrl in imageinfo.responsiveUrls.items() %}
+            {{ responsiveUrl }} {{ factor }}x{% if not loop.last %},{% endif %}
+            {% endfor %}
+          "
+          {% endif %}
+          loading="lazy"
+          >
       </span>
     </label>
     {% endfor %}
