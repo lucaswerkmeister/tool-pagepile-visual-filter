@@ -1,0 +1,13 @@
+cachetools
+decorator
+flake8
+Flask >= 2.0.2
+mwapi
+pytest
+mypy
+PyYAML
+requests
+toolforge
+types-decorator
+types-PyYAML
+types-requests
