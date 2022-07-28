@@ -2,6 +2,7 @@
 {% block head %}
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='pagepile.css') }}">
+<script defer src="{{ url_for('static', filename='reload-images.js') }}"></script>
 <script defer src="{{ url_for('static', filename='selection-buttons.js') }}"></script>
 {% endblock %}
 {% block main %}
