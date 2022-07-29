@@ -24,7 +24,7 @@
   <div>
     {% for file, imageinfo in files.items() if imageinfo %}
     <label>
-      <input type="checkbox" name="file" value="{{ page }}" class="sr-only">
+      <input type="checkbox" name="file" value="{{ file }}" class="sr-only">
       <span>
         <img
           src="{{ imageinfo.thumburl }}"
