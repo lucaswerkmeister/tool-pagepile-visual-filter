@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='pagepile.css') }}">
 <script defer src="{{ url_for('static', filename='reload-images.js') }}"></script>
 <script defer src="{{ url_for('static', filename='selection-buttons.js') }}"></script>
+<script defer src="{{ url_for('static', filename='open-images.js') }}"></script>
 {% endblock %}
 {% block main %}
 <h1>Filter <a href="https://pagepile.toolforge.org/api.php?action=get_data&id={{ id }}&format=html">PagePile #{{ id }}</a></h1>
@@ -15,8 +16,8 @@
 </p>
 <div id="selection_buttons">
   <noscript>
-    Enable JavaScript for “select all”, “select none” and “invert selection” buttons.
-    (The rest of the tool works without JavaScript, if you can’t enable it.)
+    While the core functionality of this tool works without JavaScript,
+    you may want to enable JavaScript for several quality-of-life improvements.
   </noscript>
 </div>
 <form method="post" action="{{ url_for('filter_pagepile', id=id) }}">
