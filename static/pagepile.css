@@ -1,8 +1,17 @@
+input[type=checkbox] ~ span {
+    display: inline-block;
+    background: #2a4b8d; /* Accent30 */
+    /* background becomes visible for checked images (see opacity below) */
+}
+
 input[type=checkbox]:focus-visible ~ span {
     outline: #36c 4px solid; /* Accent50 */
 }
 
+input[type=checkbox] ~ span > img {
+    background: #fff; /* for when the image isn’t loaded yet */
+}
+
 input[type=checkbox]:checked ~ span > img {
-    outline: rgba(255, 0, 0, 0.5) 125px solid;
-    outline-offset: -125px;
+    opacity: 0.5; /* show span’s background to indicate selection */
 }
