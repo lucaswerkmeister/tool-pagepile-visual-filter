@@ -43,7 +43,7 @@ You can also run the tool locally, which is much more convenient for development
 (for example, Flask will automatically reload the application any time you save a file).
 
 ```
-git clone https://phabricator.wikimedia.org/source/tool-pagepile-visual-filter.git
+git clone https://gitlab.wikimedia.org/toolforge-repos/pagepile-visual-filter.git
 cd tool-pagepile-visual-filter
 pip3 install -r requirements.txt
 FLASK_ENV=development flask run
