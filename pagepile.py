@@ -1,6 +1,6 @@
 import mwapi  # type: ignore
 import requests
-from typing import Dict, Iterable, Optional, Sequence, Tuple, Union
+from typing import Iterable, Optional, Sequence, Tuple, Union
 
 import sitematrix
 
@@ -8,9 +8,11 @@ import sitematrix
 def load_pagepile(session: mwapi.Session,
                   id: int) -> Optional[Tuple[str, Sequence[str]]]:
     try:
-        params = {'id': id,
-                  'action': 'get_data',
-                  'format': 'json'}  # type: Dict[str, Union[int, str]]
+        params: dict[str, Union[int, str]] = {
+            'id': id,
+            'action': 'get_data',
+            'format': 'json',
+        }
         r = requests.get('https://pagepile.toolforge.org/api.php',
                          params=params)
         pile = r.json()
