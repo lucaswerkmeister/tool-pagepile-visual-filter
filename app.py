@@ -2,6 +2,7 @@
 
 import decorator
 import flask
+from markupsafe import Markup
 import mwapi  # type: ignore
 import os
 import random
@@ -59,22 +60,22 @@ def csrf_token() -> str:
 
 
 @app.template_global()
-def form_value(name: str) -> flask.Markup:
+def form_value(name: str) -> Markup:
     if 'repeat_form' in flask.g and name in flask.request.form:
-        return (flask.Markup(r' value="') +
-                flask.Markup.escape(flask.request.form[name]) +
-                flask.Markup(r'" '))
+        return (Markup(r' value="') +
+                Markup.escape(flask.request.form[name]) +
+                Markup(r'" '))
     else:
-        return flask.Markup()
+        return Markup()
 
 
 @app.template_global()
-def form_attributes(name: str) -> flask.Markup:
-    return (flask.Markup(r' id="') +
-            flask.Markup.escape(name) +
-            flask.Markup(r'" name="') +
-            flask.Markup.escape(name) +
-            flask.Markup(r'" ') +
+def form_attributes(name: str) -> Markup:
+    return (Markup(r' id="') +
+            Markup.escape(name) +
+            Markup(r'" name="') +
+            Markup.escape(name) +
+            Markup(r'" ') +
             form_value(name))
 
 

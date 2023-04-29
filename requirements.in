@@ -2,6 +2,7 @@ cachetools
 decorator
 flake8
 Flask >= 2.0.2
+MarkupSafe
 mwapi
 pytest
 mypy
