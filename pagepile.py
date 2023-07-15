@@ -1,6 +1,6 @@
 import mwapi  # type: ignore
 import requests
-from typing import Iterable, Optional, Sequence, Tuple, Union
+from typing import Iterable, Optional, Sequence, Tuple
 
 import sitematrix
 
@@ -8,7 +8,7 @@ import sitematrix
 def load_pagepile(session: mwapi.Session,
                   id: int) -> Optional[Tuple[str, Sequence[str]]]:
     try:
-        params: dict[str, Union[int, str]] = {
+        params: dict[str, int | str] = {
             'id': id,
             'action': 'get_data',
             'format': 'json',
