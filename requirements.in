@@ -1,5 +1,4 @@
 cachetools
-decorator
 flake8
 Flask >= 2.0.2
 MarkupSafe
@@ -9,6 +8,4 @@ mypy
 PyYAML
 requests
 toolforge >= 6.1
-types-decorator
-types-PyYAML
 types-requests
