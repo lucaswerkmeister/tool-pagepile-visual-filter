@@ -8,7 +8,7 @@ pytest
 mypy
 PyYAML
 requests
-toolforge
+toolforge >= 6.1
 types-decorator
 types-PyYAML
 types-requests

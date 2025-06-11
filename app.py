@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
 
-import decorator
 import flask
 from markupsafe import Markup
 import mwapi  # type: ignore
-import os
 import random
-import stat
 import string
 import toolforge
-from typing import Any, Callable, Mapping, Optional, Sequence
-import yaml
+from typing import Mapping, Optional, Sequence
 
 from pagepile import load_pagepile, create_pagepile
 
@@ -22,26 +18,8 @@ user_agent = toolforge.set_user_agent(
     email='mail@lucaswerkmeister.de')
 
 
-@decorator.decorator
-def read_private(func: Callable, *args: Any, **kwargs: Any) -> Any:
-    try:
-        f = args[0]
-        fd = f.fileno()
-    except AttributeError:
-        pass
-    except IndexError:
-        pass
-    else:
-        mode = os.stat(fd).st_mode
-        if (stat.S_IRGRP | stat.S_IROTH) & mode:
-            name = getattr(f, "name", "config file")
-            raise ValueError(f'{name} is readable to others, '
-                             'must be exclusively user-readable!')
-    return func(*args, **kwargs)
-
-
 has_config = app.config.from_file('config.yaml',
-                                  load=read_private(yaml.safe_load),
+                                  load=toolforge.load_private_yaml,
                                   silent=True)
 if not has_config:
     print('config.yaml file not found, assuming local development setup')
