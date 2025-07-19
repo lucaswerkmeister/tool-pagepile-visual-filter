@@ -7,6 +7,7 @@ import random
 import string
 import toolforge
 from typing import Mapping, Optional, Sequence
+import yaml
 
 from pagepile import load_pagepile, create_pagepile
 
@@ -18,11 +19,12 @@ user_agent = toolforge.set_user_agent(
     email='mail@lucaswerkmeister.de')
 
 
-has_config = app.config.from_file('config.yaml',
-                                  load=toolforge.load_private_yaml,
-                                  silent=True)
-if not has_config:
-    print('config.yaml file not found, assuming local development setup')
+app.config.from_file('config.yaml',
+                     load=toolforge.load_private_yaml,
+                     silent=True)
+app.config.from_prefixed_env('TOOL', loads=yaml.safe_load)
+if app.secret_key is None:
+    print('No configuration found, assuming local development setup')
     characters = string.ascii_letters + string.digits
     random_string = ''.join(random.choice(characters) for _ in range(64))
     app.secret_key = random_string
