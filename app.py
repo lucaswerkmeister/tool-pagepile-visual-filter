@@ -115,6 +115,11 @@ def filter_pagepile(id: int):
     return flask.redirect(pagepile_url(new_id))
 
 
+@app.route('/healthz')
+def health():
+    return ''
+
+
 def load_files(session: mwapi.Session,
                titles: Sequence[str]) -> Mapping[str, Optional[Mapping]]:
     files = dict.fromkeys(titles)
