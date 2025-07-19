@@ -45,7 +45,7 @@ You can also run the tool locally, which is much more convenient for development
 ```
 git clone https://gitlab.wikimedia.org/toolforge-repos/pagepile-visual-filter.git
 cd tool-pagepile-visual-filter
-pip3 install -r requirements.txt
+pip3 install -r requirements.txt -r dev-requirements.txt
 FLASK_ENV=development flask run
 ```
 

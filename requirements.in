@@ -1,11 +1,7 @@
 cachetools
-flake8
 Flask >= 2.0.2
 MarkupSafe
 mwapi
-pytest
-mypy
 PyYAML
 requests
 toolforge >= 6.1
-types-requests
