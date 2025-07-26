@@ -1,5 +1,5 @@
 import mwapi  # type: ignore
-import pytest  # type: ignore
+import pytest
 
 
 @pytest.fixture
