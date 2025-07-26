@@ -2,5 +2,6 @@
 flake8
 mypy
 pytest
+types-cachetools
 types-PyYAML
 types-requests
