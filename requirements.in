@@ -3,7 +3,6 @@ Flask >= 2.0.2
 gunicorn
 MarkupSafe
 mwapi
-pymysql @ git+https://github.com/PyMySQL/PyMySQL@main
 PyYAML
 requests
 toolforge >= 6.1
