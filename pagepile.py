@@ -17,9 +17,11 @@ def load_pagepile(session: mwapi.Session,
                          params=params)
         pile = r.json()
     except ValueError:
-        # PagePile doesn’t properly catch most errors,
+        # PagePile doesn’t properly some most errors,
         # it just dumps them to the output, producing invalid JSON –
-        # we simply treat them all as “no such pile”
+        # we simply treat them as “no such pile”
+        return None
+    if pile.get('status', '').startswith('ERROR: '):
         return None
     domain = sitematrix.dbname_to_domain(session, pile['wiki'])
     pages = [page.replace('_', ' ') for page in pile['pages']]
