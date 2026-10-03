@@ -28,6 +28,11 @@
       <input type="checkbox" name="file" value="{{ file }}" class="sr-only">
       <span>
         <img
+          {% if imageinfo.thumbattribs %}
+          {% for name, value in imageinfo.thumbattribs.items() %}
+          {{ name }}="{{ value }}"
+          {% endfor %}
+          {% else %}
           src="{{ imageinfo.thumburl }}"
           width="{{ imageinfo.thumbwidth }}"
           height="{{ imageinfo.thumbheight }}"
@@ -38,7 +43,9 @@
             {% endfor %}
           "
           {% endif %}
+          decoding="async"
           loading="lazy"
+          {% endif %}
           >
       </span>
     </label>
